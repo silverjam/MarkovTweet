@@ -1,0 +1,14 @@
+AppEngine based Markov-Chain tweet generator.
+
+Set-up notes:
+
++ markov/cfg.py: 
+
+  This holds the consumer_secret and the cookie_secret for the applicatoin.
+  The former for Twitter OAuth and the latter for a "secure" cookie implementation so
+  that a username can be stored on the client side but not forged.
+
+  The file `cfg.py' is ignored in .gitignore so it must be setup at deployment
+  time.
+
+Also see vendor/README for library dependencies.

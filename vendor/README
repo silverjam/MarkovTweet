@@ -1,0 +1,10 @@
+Dependencies:
+
+    Python AppEngine: http://code.google.com/appengine/downloads.html
+        Extract in `vendor'
+
+    Python Twitter Tools: http://pypi.python.org/pypi/twitter/1.4.2
+        Baked in to markov/vendor-libs.zip
+
+    Simplejson: http://pypi.python.org/pypi/simplejson/
+        Baked in to markov/vendor-libs.zip
