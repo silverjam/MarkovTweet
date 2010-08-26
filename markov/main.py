@@ -34,21 +34,9 @@ def buildTemplatePath(name):
 class TemplatedMixin(object):
 
   def renderTemplate(self, name, **kwArgs):
-    from google.appengine.ext.webapp import template
     fullPath = buildTemplatePath(name)
     kwArgs.update({'KEY' : consumer_key})
     self.response.out.write(template.render(fullPath, kwArgs))
-
-head = """
-  <head>
-    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
-    <title>MarkovTweet</title>
-    <script src="http://platform.twitter.com/anywhere.js?id=%(KEY)s&v=1" type="text/javascript"></script>
-  <script type="text/javascript"> twttr.anywhere(function (T) { T.hovercards(); }); </script>
-  </head>
-""" % { 'KEY' : consumer_key }
-
-template = "<!DOCTYPE html>\n<html>" + head + "<body>%(BODY)s</body></html>"
 
 def getOAuth(url):
     return AppEngineOAuth.TwitterClient(consumer_key, secrets.consumer_secret, callback_url % url)
