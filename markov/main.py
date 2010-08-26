@@ -63,7 +63,7 @@ class OAuthCallbackHandler(webapp.RequestHandler, TemplatedMixin):
     self.renderTemplate(cfg.OAUTH_TEMPLATE, USER=username)
 
     cookies = LilCookies(self, secrets.cookie_secret)
-    cookies.set_secure_cookie('markov_twitter_username', username)
+    cookies.set_secure_cookie(cfg.COOKIE_USERNAME, username)
 
     d.put()
 
@@ -88,7 +88,7 @@ class GenerateHandler(webapp.RequestHandler, TemplatedMixin):
   def get(self):
 
     cookies = LilCookies(self, secrets.cookie_secret)
-    username = cookies.get_secure_cookie('markov_twitter_username')
+    username = cookies.get_secure_cookie(cfg.COOKIE_USERNAME)
 
     if username is None:
       self.error(404)
@@ -129,7 +129,7 @@ class PostHandler(webapp.RequestHandler, TemplatedMixin):
   def get(self):
 
     cookies = LilCookies(self, secrets.cookie_secret)
-    username = cookies.get_secure_cookie('markov_twitter_username')
+    username = cookies.get_secure_cookie(cfg.COOKIE_USERNAME)
 
     if not username:
       self.error(404)
@@ -164,7 +164,7 @@ class MainHandler(webapp.RequestHandler, TemplatedMixin):
   def get(self):
 
     cookies = LilCookies(self, secrets.cookie_secret)
-    username = cookies.get_secure_cookie('markov_twitter_username')
+    username = cookies.get_secure_cookie(cfg.COOKIE_USERNAME)
 
     if username is None:
       self.renderTemplate(cfg.INDEX_TEMPLATE)
@@ -172,7 +172,7 @@ class MainHandler(webapp.RequestHandler, TemplatedMixin):
 
     d = model.MarkovUserV1.get_by_key_name(username)
     if d is None:
-      cookies.clear_cookie('markov_twitter_username')
+      cookies.clear_cookie(cfg.COOKIE_USERNAME)
       self.response.out.write(default)
       return
 

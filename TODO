@@ -1,5 +1,1 @@
-+ Move cookie string to cfg module
-
-+ Remove the explicit import of template module in renderTemplate
-
 + Make the tweet property in the model multiline
