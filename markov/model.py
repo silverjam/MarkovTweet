@@ -7,4 +7,4 @@ class MarkovUserV1(db.Model):
     pictureUrl = db.StringProperty()
     name = db.StringProperty()
     tweets = db.BlobProperty()
-    generated = db.StringProperty()
+    generated = db.StringProperty(multiline=True)
