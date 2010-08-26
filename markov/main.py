@@ -23,9 +23,21 @@ import mrkvtwt
 import not_found
 import model
 import secrets
+import cfg
 
 consumer_key = "xLIRlOkGfNMtuJjkiTT8kw"
 callback_url = "%s/oauth_callback"
+
+def buildTemplatePath(name):
+  return os.path.join(os.path.dirname(__file__), name)
+
+class TemplatedMixin(object):
+
+  def renderTemplate(self, name, **kwArgs):
+    from google.appengine.ext.webapp import template
+    fullPath = buildTemplatePath(name)
+    kwArgs.update({'KEY' : consumer_key})
+    self.response.out.write(template.render(fullPath, kwArgs))
 
 head = """
   <head>
@@ -177,37 +189,26 @@ class PostHandler(webapp.RequestHandler):
     d.generated = None
     d.put()
 
-class MainHandler(webapp.RequestHandler):
-  def get(self):
 
-    default = template % { 'BODY' : """
-<p>Generate tweets based on a Markov chain built from past tweets.</p>
-<br/>
-<a href="/authorize">Authorize MarkovTweet</a>
-"""}
+class MainHandler(webapp.RequestHandler, TemplatedMixin):
+
+  def get(self):
 
     cookies = LilCookies(self, secrets.cookie_secret)
     username = cookies.get_secure_cookie('markov_twitter_username')
 
     if username is None:
-        self.response.out.write(default)
-        return
+      self.renderTemplate(cfg.INDEX_TEMPLATE)
+      return
 
     d = model.MarkovUserV1.get_by_key_name(username)
     if d is None:
-        cookies.clear_cookie('markov_twitter_username')
-        self.response.out.write(default)
-        return
+      cookies.clear_cookie('markov_twitter_username')
+      self.response.out.write(default)
+      return
 
-    authorized = template % { 
-'BODY' : 
+    self.renderTemplate(cfg.AUTHED_INDEX_TEMPLATE, USER=username)
 
-"""<p>Hi @%(USER)s. I'm collecting your tweets for a 
-markov chain generated tweet. <a href="/generate">Generate now!</a></p>""" % { 
-
-    'USER' : username } 
-}
-    self.response.out.write(authorized)
 
 def main():
 

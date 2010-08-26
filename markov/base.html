@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+  <title>MarkovTweet</title>
+  <script src="http://platform.twitter.com/anywhere.js?id={{ KEY }}s&v=1" type="text/javascript"></script>
+  <script type="text/javascript"> twttr.anywhere(function (T) { T.hovercards(); }); </script>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+{% block code %}{% endblock %}
+</head>
+<body>
+{% block body %}{% endblock %}
+</body></html>
+<!-- vim: ts=2:sts=2:et:sw=2:ft=htmldjango
+-->
