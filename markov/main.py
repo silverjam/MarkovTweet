@@ -137,7 +137,7 @@ class GenerateHandler(webapp.RequestHandler, TemplatedMixin):
     self.renderTemplate(cfg.GENERATE_DONE_TEMPLATE, POST=d.generated)
 
 
-class PostHandler(webapp.RequestHandler):
+class PostHandler(webapp.RequestHandler, TemplatedMixin):
   def get(self):
 
     cookies = LilCookies(self, secrets.cookie_secret)
@@ -155,29 +155,17 @@ class PostHandler(webapp.RequestHandler):
       return
 
     if d.generated is None:
-      self.response.out.write(template % { 'BODY' : '''<p>Nothing to post!</p>
-<p><a href="/generate">Regenerate</a></p>
-<p><a href="/">Go home</a></p>'''})
+      self.renderTemplate(cfg.NOTHING_TO_POST_TEMPLATE)
       return
 
     auth = OAuth(d.userToken, d.userSecret, consumer_key, secrets.consumer_secret)
     twitter = Twitter(auth=auth)
-    result = setStatus(twitter, d.generated)
 
-    self.response.out.write(template % { 'BODY' :
-"""
-<p>%(TIME)s</p>
-<p>Cool, I went ahead and posted your <a href="http://twitter.com/%(USER)s/status/%(ID)s">tweet</a>:</p>
-<blockquote>%(POST)s</blockquote>
-<p><a href="/generate">Regenerate</a></p>
-<p><a href="/">Go home</a></p>
-""" % { 
-  'TIME' : result['created_at'], 
-  'USER' : username, 
-  'ID' : result['id'], 
-  'POST' : d.generated,
-  }
-})
+    result = setStatus(twitter, d.generated)
+    #import example_response
+    #result = example_response.response
+
+    self.renderTemplate(cfg.POST_TEMPLATE, TIME=result['created_at'], USER=username, ID=result['id'], POST=d.generated)
 
     d.generated = None
     d.put()

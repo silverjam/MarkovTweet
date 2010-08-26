@@ -1,5 +1,5 @@
 
-result = {u'contributors': None,
+response = {u'contributors': None,
  u'coordinates': None,
  u'created_at': u'Tue Aug 24 05:50:57 +0000 2010',
  u'favorited': False,

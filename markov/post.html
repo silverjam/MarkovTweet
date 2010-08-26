@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<p>{{ TIME }}</p>
+<p>Cool, I went ahead and posted your <a href="http://twitter.com/{{ USER }}/status/{{ ID }}">tweet</a>:</p>
+<blockquote>{{ POST }}</blockquote>
+<p><a href="/generate">Regenerate</a></p>
+<p><a href="/">Go home</a></p>
+
+{% endblock body %}
+
+<!-- vim: ts=2:sts=2:et:sw=2:ft=htmldjango
+-->
