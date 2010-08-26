@@ -95,7 +95,8 @@ def fetch_tweets(userToken, userSecret):
   twitter = Twitter(auth=auth)
   return [ S['text'] for S in getStatuses(twitter, 1000) ]
 
-class GenerateHandler(webapp.RequestHandler):
+class GenerateHandler(webapp.RequestHandler, TemplatedMixin):
+
   def get(self):
 
     cookies = LilCookies(self, secrets.cookie_secret)
@@ -128,18 +129,13 @@ class GenerateHandler(webapp.RequestHandler):
     for generated in mrkvtwt.markov(order, table):
       continue
 
-    d.generated = ''.join(generated)[:140]
+    tweet = ''.join(generated)[:140]
+
+    d.generated = tweet
     d.put()
 
-    self.response.out.write(template % {
+    self.renderTemplate(cfg.GENERATE_DONE_TEMPLATE, POST=d.generated)
 
-'BODY' : '''<p>Generated tweet:</p>
-<blockquote>%(POST)s</blockquote>
-<p><a href="/post">Post it</a></p>
-<p><a href="/generate">Regenerate</a> (reload)</p>
-''' % { 'POST' : d.generated }
-
-})
 
 class PostHandler(webapp.RequestHandler):
   def get(self):
