@@ -53,7 +53,7 @@ template = "<!DOCTYPE html>\n<html>" + head + "<body>%(BODY)s</body></html>"
 def getOAuth(url):
     return AppEngineOAuth.TwitterClient(consumer_key, secrets.consumer_secret, callback_url % url)
 
-class OAuthCallback(webapp.RequestHandler):
+class OAuthCallbackHandler(webapp.RequestHandler):
 
   def get(self):
 
@@ -215,7 +215,7 @@ def main():
   application = webapp.WSGIApplication([
       ('/', MainHandler),
       ('/authorize', AuthHandler),
-      ('/oauth_callback', OAuthCallback),
+      ('/oauth_callback', OAuthCallbackHandler),
       ('/generate', GenerateHandler),
       ('/post', PostHandler),
     ],
