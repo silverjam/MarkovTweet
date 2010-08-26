@@ -3,9 +3,6 @@ version: 1
 runtime: python
 api_version: 1
 
-#inbound_services:
-#- mail
-
 handlers:
 - url: /
   script: main.py
@@ -21,26 +18,6 @@ handlers:
 
 - url: /post
   script: main.py
-
-#- url: /admin/request/(delete|list)
-#  script: main.py
-#  login: admin
-
-#- url: /admin/email/(delete|list)
-#  script: main.py
-#  login: admin
-
-#- url: /_ah/mail/confirm-.*
-#  script: main.py 
-#  login: admin
-
-#- url: /_ah/mail/reminder-.*
-#  script: main.py 
-#  login: admin
-
-#- url: /reminder/check
-#  script: main.py
-#  login: admin
 
 - url: /.*
   script: not_found.py
