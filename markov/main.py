@@ -53,7 +53,7 @@ template = "<!DOCTYPE html>\n<html>" + head + "<body>%(BODY)s</body></html>"
 def getOAuth(url):
     return AppEngineOAuth.TwitterClient(consumer_key, secrets.consumer_secret, callback_url % url)
 
-class OAuthCallbackHandler(webapp.RequestHandler):
+class OAuthCallbackHandler(webapp.RequestHandler, TemplatedMixin):
 
   def get(self):
 
@@ -72,10 +72,7 @@ class OAuthCallbackHandler(webapp.RequestHandler):
     d.userToken = user_info['token']
     d.name = user_info['name']
 
-    self.response.out.write(template % { 
-        'BODY' : '<p>Thanks @%(USER)s! You can now <a href="/generate">generate</a> a tweet, or go <a href="/">home</a></p>' % 
-            { 'USER' : username }
-    })
+    self.renderTemplate(cfg.OAUTH_TEMPLATE, USER=username)
 
     cookies = LilCookies(self, secrets.cookie_secret)
     cookies.set_secure_cookie('markov_twitter_username', username)
