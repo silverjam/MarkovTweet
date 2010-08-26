@@ -22,7 +22,7 @@ from twitter import OAuth
 import mrkvtwt
 import not_found
 import model
-import cfg
+import secrets
 
 consumer_key = "xLIRlOkGfNMtuJjkiTT8kw"
 callback_url = "%s/oauth_callback"
@@ -39,7 +39,7 @@ head = """
 template = "<!DOCTYPE html>\n<html>" + head + "<body>%(BODY)s</body></html>"
 
 def getOAuth(url):
-    return AppEngineOAuth.TwitterClient(consumer_key, cfg.consumer_secret, callback_url % url)
+    return AppEngineOAuth.TwitterClient(consumer_key, secrets.consumer_secret, callback_url % url)
 
 class OAuthCallback(webapp.RequestHandler):
 
@@ -65,7 +65,7 @@ class OAuthCallback(webapp.RequestHandler):
             { 'USER' : username }
     })
 
-    cookies = LilCookies(self, cfg.cookie_secret)
+    cookies = LilCookies(self, secrets.cookie_secret)
     cookies.set_secure_cookie('markov_twitter_username', username)
 
     d.put()
@@ -82,14 +82,14 @@ def setStatus(twitter, status):
   return twitter.statuses.update(status=status)
 
 def fetch_tweets(userToken, userSecret):
-  auth = OAuth(userToken, userSecret, consumer_key, cfg.consumer_secret)
+  auth = OAuth(userToken, userSecret, consumer_key, secrets.consumer_secret)
   twitter = Twitter(auth=auth)
   return [ S['text'] for S in getStatuses(twitter, 1000) ]
 
 class GenerateHandler(webapp.RequestHandler):
   def get(self):
 
-    cookies = LilCookies(self, cfg.cookie_secret)
+    cookies = LilCookies(self, secrets.cookie_secret)
     username = cookies.get_secure_cookie('markov_twitter_username')
 
     if username is None:
@@ -135,7 +135,7 @@ class GenerateHandler(webapp.RequestHandler):
 class PostHandler(webapp.RequestHandler):
   def get(self):
 
-    cookies = LilCookies(self, cfg.cookie_secret)
+    cookies = LilCookies(self, secrets.cookie_secret)
     username = cookies.get_secure_cookie('markov_twitter_username')
 
     if not username:
@@ -155,7 +155,7 @@ class PostHandler(webapp.RequestHandler):
 <p><a href="/">Go home</a></p>'''})
       return
 
-    auth = OAuth(d.userToken, d.userSecret, consumer_key, cfg.consumer_secret)
+    auth = OAuth(d.userToken, d.userSecret, consumer_key, secrets.consumer_secret)
     twitter = Twitter(auth=auth)
     result = setStatus(twitter, d.generated)
 
@@ -186,7 +186,7 @@ class MainHandler(webapp.RequestHandler):
 <a href="/authorize">Authorize MarkovTweet</a>
 """}
 
-    cookies = LilCookies(self, cfg.cookie_secret)
+    cookies = LilCookies(self, secrets.cookie_secret)
     username = cookies.get_secure_cookie('markov_twitter_username')
 
     if username is None:
