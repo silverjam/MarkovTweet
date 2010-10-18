@@ -1,0 +1,38 @@
+h1 {
+	background-color: gray;
+	padding: .2em;
+	color: white;
+}
+
+a.header {
+	text-decoration: none;
+	background-color: inherit;
+}
+
+a.header:hover {
+	background-color: inherit;
+}
+
+a {
+	background-color: #778899;
+	color: white;
+	text-decoration: none;
+	padding: 2px;
+	padding-left: 4px;
+	padding-right: 4px;
+}
+
+blockquote {
+	border-left: 5px solid;
+	border-color: #EEEEEE;
+	padding: 7px;
+}
+
+a:hover {
+	background-color: #8E9EAE;
+}
+
+body {
+}
+
+/* vim: ft=css: */
