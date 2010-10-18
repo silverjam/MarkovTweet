@@ -19,5 +19,8 @@ handlers:
 - url: /post
   script: main.py
 
+- url: /stylesheets
+  static_dir: stylesheets
+
 - url: /.*
   script: not_found.py
